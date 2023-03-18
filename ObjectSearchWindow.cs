@@ -21,7 +21,7 @@ public class ObjectSearchWindow : EditorWindow
         searchQuery = EditorGUILayout.TextField("Search Query", searchQuery);
         if (EditorGUI.EndChangeCheck())
         {
-            SearchObjects();
+            searchResults = SearchObjects(searchQuery);
         }
 
         GUILayout.Label("Results:", EditorStyles.boldLabel);
@@ -48,9 +48,9 @@ public class ObjectSearchWindow : EditorWindow
         EditorGUILayout.EndVertical();
     }
 
-    private void SearchObjects()
+    private List<GameObject> SearchObjects(string query)
     {
-        searchResults.Clear();
+        List<GameObject> results = new List<GameObject>();
 
         Transform[] allTransforms = FindObjectsOfType<Transform>();
         List<GameObject> allObjects = new List<GameObject>();
@@ -62,10 +62,12 @@ public class ObjectSearchWindow : EditorWindow
 
         foreach (GameObject obj in allObjects)
         {
-            if (obj.name.Contains(searchQuery))
+            if (obj.name.Contains(query))
             {
-                searchResults.Add(obj);
+                results.Add(obj);
             }
         }
+
+        return results;
     }
 }
